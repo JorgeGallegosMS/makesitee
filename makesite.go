@@ -1,16 +1,22 @@
 package main
 
-<<<<<<< HEAD
 import (
 	"io/ioutil"
+	"os"
+	"strings"
+	"text/template"
 )
 
-func main() {
-
+type data struct {
+	Content string
 }
 
-func readFile() string {
-	fileContents, err := ioutil.ReadFile("first-post.txt")
+func main() {
+	renderTemplate("template.tmpl", "first-post.txt")
+}
+
+func readFile(filename string) string {
+	fileContents, err := ioutil.ReadFile(filename)
 	if err != nil {
 		panic(err)
 	}
@@ -18,11 +24,16 @@ func readFile() string {
 	return string(fileContents)
 }
 
-func renderTemplate()
-=======
-import "fmt"
+func renderTemplate(templateFile, txtfile string) {
+	tmplData := data{Content: readFile(txtfile)}
 
-func main() {
-	fmt.Println("Hello, world!")
+	t := template.Must(template.New(templateFile).ParseFiles(templateFile))
+	newTemplate := strings.Split(txtfile, ".")[0] + ".html"
+	file, _ := os.Create(newTemplate)
+
+	err := t.Execute(file, tmplData)
+
+	if err != nil {
+		panic(err)
+	}
 }
->>>>>>> 9514ac8a2c135a448a2b15a4b246dcd5d59ee7bf
