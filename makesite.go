@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"io/ioutil"
 	"os"
 	"strings"
@@ -12,7 +13,9 @@ type data struct {
 }
 
 func main() {
-	renderTemplate("template.tmpl", "first-post.txt")
+	txtfile := flag.String("file", "first-post.txt", "The name of a text file in the current directory")
+	flag.Parse()
+	renderTemplate("template.tmpl", *txtfile)
 }
 
 func readFile(filename string) string {
